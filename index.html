@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2027 パブリックコミットメント｜1人30〜50の目標</title>
+<meta name="description" content="2027年の目標を1人30〜50個立てて公開するパブリックコミットメント。">
+<style>
+  :root{
+    --ink:#1f2328; --sub:#59636e; --line:#e3e6ea; --bg:#fafaf8; --card:#fff;
+    --accent:#2f5bd3; --warn:#b42318;
+    --s-doing:#8DB8F2; --s-done:#7FCB7A; --s-hold:#FFD966; --s-drop:#F2A7A7;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;
+    line-height:1.7;font-size:15px}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 20px 80px}
+  .top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+  header h1{font-size:30px;margin:0 0 4px;letter-spacing:.02em}
+  header p{margin:0;color:var(--sub)}
+  .account{font-size:13px;color:var(--sub);text-align:right}
+  h2{font-size:19px;margin:44px 0 14px;padding-bottom:6px;border-bottom:2px solid var(--ink)}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;text-decoration:none;color:inherit}
+  .card:hover{border-color:var(--accent)}
+  .card .name{font-weight:700;font-size:17px}
+  .card .nums{font-size:13px;color:var(--sub);margin-top:2px}
+  .bar{height:6px;background:var(--line);border-radius:3px;margin-top:10px;overflow:hidden}
+  .bar span{display:block;height:100%;background:var(--accent)}
+  .card .left{font-size:12px;color:var(--sub);margin-top:6px}
+  .member{margin-top:28px}
+  .member h3{font-size:18px;margin:0 0 2px}
+  .member .meta{font-size:13px;color:var(--sub);margin-bottom:10px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:14px}
+  th{background:#f2f3f5;font-weight:600;font-size:13px;color:var(--sub);white-space:nowrap}
+  tr:last-child td{border-bottom:none}
+  td.no{width:44px;text-align:center;color:var(--sub)}
+  td.due,td.cat{white-space:nowrap}
+  .memo{display:block;font-size:12px;color:var(--sub)}
+  .chip{display:inline-block;padding:1px 10px;border-radius:999px;font-size:12px;white-space:nowrap;border:1px solid var(--line)}
+  .chip.doing{background:var(--s-doing);border-color:var(--s-doing)}
+  .chip.done{background:var(--s-done);border-color:var(--s-done)}
+  .chip.hold{background:var(--s-hold);border-color:var(--s-hold)}
+  .chip.drop{background:var(--s-drop);border-color:var(--s-drop)}
+  .empty{color:var(--sub);font-size:14px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  input,select,textarea{font:inherit;font-size:14px;padding:7px 9px;border:1px solid #cfd4da;border-radius:6px;background:#fff;color:var(--ink)}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:var(--accent)}
+  button{font:inherit;font-size:14px;padding:8px 16px;border-radius:8px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
+  button.ghost{background:#fff;color:var(--ink)}
+  button.small{padding:3px 10px;font-size:12px}
+  button:disabled{opacity:.5;cursor:default}
+  .msg{font-size:13px;margin-top:8px;min-height:1.2em}
+  .msg.err{color:var(--warn)}
+  .edit td{padding:6px}
+  .edit input,.edit select,.edit textarea{width:100%}
+  .edit textarea{resize:vertical;min-height:38px}
+  .edit td.no{vertical-align:middle}
+  .counter{font-size:14px;color:var(--sub)}
+  .sticky{position:sticky;bottom:0;background:var(--bg);padding:12px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .rules ol{padding-left:1.4em;margin:0}
+  .rules li{margin:4px 0}
+  .dl a{display:inline-block;margin-top:6px;padding:10px 16px;border-radius:8px;background:var(--ink);color:#fff;text-decoration:none;font-size:14px}
+  .notice{background:#fff7e6;border:1px solid #f5d38a;border-radius:8px;padding:12px 14px;font-size:14px}
+  footer{margin-top:60px;font-size:12px;color:var(--sub)}
+  @media (max-width:700px){
+    .view th.cat,.view td.cat,.view th.due,.view td.due{display:none}
+    header h1{font-size:24px}
+    .edit thead{display:none}
+    .edit tr{display:grid;grid-template-columns:40px 1fr 1fr;gap:6px;padding:8px;border-bottom:1px solid var(--line)}
+    .edit td{border:none;padding:0}
+    .edit td.goalcell,.edit td.memocell{grid-column:2 / 4}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <header>
+      <h1>2027 パブリックコミットメント</h1>
+      <p>来年の目標を1人30〜50個立てて、公開します。</p>
+    </header>
+    <div class="account" id="account"></div>
+  </div>
+
+  <div id="setup" class="notice" hidden>
+    データベースの接続先がまだ設定されていません（config.js）。
+  </div>
+
+  <h2>メンバー</h2>
+  <div class="cards" id="cards"><p class="empty">読み込み中…</p></div>
+
+  <section id="mine" hidden>
+    <h2>自分の目標を書く</h2>
+    <div class="panel">
+      <div class="row">
+        <label>表示名 <input id="displayName" maxlength="30" placeholder="例：金杉"></label>
+        <label>宣言日 <input id="declaredOn" type="date"></label>
+        <span class="counter" id="counter"></span>
+      </div>
+      <div style="margin-top:14px;overflow-x:auto">
+        <table class="edit">
+          <thead><tr><th>No.</th><th>目標（言い切る）（やること＋達成基準）</th><th>期限</th><th>カテゴリ</th><th>ステータス</th><th>振り返りメモ</th><th></th></tr></thead>
+          <tbody id="editRows"></tbody>
+        </table>
+      </div>
+      <div class="sticky">
+        <button class="ghost" id="addRow">＋ 目標を追加</button>
+        <button id="saveAll">保存する</button>
+        <span class="msg" id="saveMsg"></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="loginBox" hidden>
+    <h2>メンバーのログイン</h2>
+    <div class="panel">
+      <p style="margin-top:0">招待されたメンバーは、メールアドレスを入れるとログイン用のリンクが届きます。</p>
+      <form class="row" id="loginForm">
+        <input id="email" type="email" required placeholder="you@example.com" style="min-width:260px">
+        <button type="submit" id="loginBtn">ログインリンクを送る</button>
+      </form>
+      <div class="msg" id="loginMsg"></div>
+    </div>
+  </section>
+
+  <h2>目標リスト</h2>
+  <div id="lists"></div>
+
+  <h2>書き方のルール</h2>
+  <div class="rules">
+    <ol>
+      <li>1人30〜50個。大きい目標と小さい目標を混ぜてよい（わくわくするものを多くする）</li>
+      <li>目標は言い切りで書く（「〜したい」ではなく「〜する」）</li>
+      <li>達成基準は、数字か、もしくは、他の人が見て判定できる状態で書く</li>
+      <li>期限を入れる。年内いっぱいなら 2027/12/31</li>
+      <li>達成したら、ステータスは月に1回更新する</li>
+    </ol>
+  </div>
+
+  <h2>テンプレート</h2>
+  <div class="dl">
+    <p>同じやり方で目標を立てたい人のために、10人分の記入シートと集計表が入ったテンプレートを置いています。Googleスプレッドシートにもそのまま読み込めます。</p>
+    <a href="template/2027目標リスト_テンプレート.xlsx" download>テンプレートをダウンロード（.xlsx）</a>
+  </div>
+
+  <footer>ステータスは月に1回更新します。</footer>
+</div>
+
+<script src="config.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
